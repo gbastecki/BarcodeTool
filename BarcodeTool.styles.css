@@ -1,0 +1,190 @@
+/* /Layout/MainLayout.razor.rz.scp.css */
+.page[b-80hiygopnq] {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+}
+
+main[b-80hiygopnq] {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background-color: var(--bg-dark);
+    min-width: 0;
+}
+
+.sidebar[b-80hiygopnq] {
+    background-color: var(--bg-card);
+    border-right: 1px solid var(--border);
+}
+
+.content[b-80hiygopnq] {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+}
+
+    .content > *[b-80hiygopnq] {
+        flex: 1;
+        min-height: 0;
+    }
+
+@media (min-width: 641px) {
+    .page[b-80hiygopnq] {
+        flex-direction: row;
+    }
+
+    .sidebar[b-80hiygopnq] {
+        width: 200px;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        flex-shrink: 0;
+    }
+}
+/* /Layout/NavMenu.razor.rz.scp.css */
+.navbar-toggler[b-qyqdht26w4] {
+    background-color: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-main);
+    padding: 0.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.nav-header[b-qyqdht26w4] {
+    height: 3.8rem;
+    background-color: rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    padding: 0 1rem;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+}
+
+.navbar-brand[b-qyqdht26w4] {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-main);
+    text-decoration: none;
+    flex: 1;
+}
+
+.nav-toggle[b-qyqdht26w4] {
+    display: none;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--text-main);
+    font-size: 1.25rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+    .nav-toggle:hover[b-qyqdht26w4] {
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+.nav-menu[b-qyqdht26w4] {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 0;
+    overflow-y: auto;
+}
+
+.nav-main[b-qyqdht26w4] {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.nav-footer[b-qyqdht26w4] {
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+}
+
+.nav-icon[b-qyqdht26w4] {
+    width: 1rem;
+    height: 1rem;
+    margin-right: 0.5rem;
+    opacity: 0.7;
+    flex-shrink: 0;
+}
+
+.nav-item[b-qyqdht26w4]  a:hover .nav-icon,
+.nav-item[b-qyqdht26w4]  a.active .nav-icon {
+    opacity: 1;
+}
+
+
+.nav-item[b-qyqdht26w4] {
+    padding: 0 1rem;
+    margin-bottom: 0.25rem;
+}
+
+    .nav-item[b-qyqdht26w4]  a {
+        color: var(--text-muted);
+        border-radius: 8px;
+        height: 3rem;
+        display: flex;
+        align-items: center;
+        line-height: 3rem;
+        padding: 0 1rem;
+        text-decoration: none;
+        transition: all 0.2s;
+        font-weight: 500;
+    }
+
+        .nav-item[b-qyqdht26w4]  a.active {
+            background: linear-gradient(90deg, rgba(79, 70, 229, 0.1), transparent);
+            color: var(--primary);
+            border-left: 3px solid var(--primary);
+        }
+
+        .nav-item[b-qyqdht26w4]  a:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--text-main);
+        }
+
+/* Mobile styles */
+@media (max-width: 640.98px) {
+    .nav-toggle[b-qyqdht26w4] {
+        display: block;
+    }
+
+    .nav-menu[b-qyqdht26w4] {
+        position: absolute;
+        top: 3.5rem;
+        left: 0;
+        right: 0;
+        background-color: var(--bg-card);
+        border-bottom: 1px solid var(--border);
+        z-index: 100;
+    }
+
+        .nav-menu.collapse[b-qyqdht26w4] {
+            display: none;
+        }
+}
+
+@media (min-width: 641px) {
+
+    .navbar-toggler[b-qyqdht26w4],
+    .nav-toggle[b-qyqdht26w4] {
+        display: none;
+    }
+
+    .collapse[b-qyqdht26w4] {
+        display: flex !important;
+    }
+}

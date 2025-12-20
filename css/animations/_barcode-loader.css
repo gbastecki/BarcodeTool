@@ -1,0 +1,174 @@
+﻿/* Initialization Loading Animation */
+
+#app:has(.barcode-loader) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    background: var(--bg-dark);
+}
+
+#app:not(:has(.barcode-loader)) {
+    height: 100%;
+    width: 100%;
+}
+
+.barcode-loader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.barcode-bars {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 3px;
+    height: 80px;
+    padding: 10px 20px;
+    background: white;
+    border-radius: 8px;
+}
+
+    .barcode-bars .bar {
+        width: 4px;
+        background: #1a1a2e;
+        animation: barcode-grow 1.2s ease-in-out infinite;
+    }
+
+        .barcode-bars .bar:nth-child(1) {
+            height: 60px;
+            width: 2px;
+            animation-delay: 0s;
+        }
+
+        .barcode-bars .bar:nth-child(2) {
+            height: 60px;
+            width: 4px;
+            animation-delay: 0.1s;
+        }
+
+        .barcode-bars .bar:nth-child(3) {
+            height: 60px;
+            width: 2px;
+            animation-delay: 0.05s;
+        }
+
+        .barcode-bars .bar:nth-child(4) {
+            height: 60px;
+            width: 6px;
+            animation-delay: 0.15s;
+        }
+
+        .barcode-bars .bar:nth-child(5) {
+            height: 60px;
+            width: 2px;
+            animation-delay: 0.2s;
+        }
+
+        .barcode-bars .bar:nth-child(6) {
+            height: 60px;
+            width: 4px;
+            animation-delay: 0.08s;
+        }
+
+        .barcode-bars .bar:nth-child(7) {
+            height: 60px;
+            width: 2px;
+            animation-delay: 0.25s;
+        }
+
+        .barcode-bars .bar:nth-child(8) {
+            height: 60px;
+            width: 2px;
+            animation-delay: 0.12s;
+        }
+
+        .barcode-bars .bar:nth-child(9) {
+            height: 60px;
+            width: 6px;
+            animation-delay: 0.3s;
+        }
+
+        .barcode-bars .bar:nth-child(10) {
+            height: 60px;
+            width: 2px;
+            animation-delay: 0.18s;
+        }
+
+        .barcode-bars .bar:nth-child(11) {
+            height: 60px;
+            width: 4px;
+            animation-delay: 0.35s;
+        }
+
+        .barcode-bars .bar:nth-child(12) {
+            height: 60px;
+            width: 2px;
+            animation-delay: 0.22s;
+        }
+
+        .barcode-bars .bar:nth-child(13) {
+            height: 60px;
+            width: 2px;
+            animation-delay: 0.4s;
+        }
+
+        .barcode-bars .bar:nth-child(14) {
+            height: 60px;
+            width: 6px;
+            animation-delay: 0.28s;
+        }
+
+        .barcode-bars .bar:nth-child(15) {
+            height: 60px;
+            width: 2px;
+            animation-delay: 0.45s;
+        }
+
+        .barcode-bars .bar:nth-child(16) {
+            height: 60px;
+            width: 4px;
+            animation-delay: 0.32s;
+        }
+
+@keyframes barcode-grow {
+
+    0%, 100% {
+        transform: scaleY(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scaleY(0.5);
+        opacity: 0.5;
+    }
+}
+
+.barcode-text {
+    font-family: 'Consolas', monospace;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: white;
+    letter-spacing: 0.5em;
+    margin-top: -0.5rem;
+}
+
+.loading-label {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+
+    0%, 100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}

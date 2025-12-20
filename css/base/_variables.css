@@ -1,0 +1,19 @@
+﻿/* Colors, Shadows, and Global Variables */
+
+:root {
+    /* Primary Colors */
+    --primary: #a0a2ff;
+    --primary-dark: #4f46e5;
+    --secondary: #f472b6;
+    --accent: #fbbf24;
+    /* Background Colors */
+    --bg-dark: #0f172a;
+    --bg-card: #1e293b;
+    /* Text Colors */
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    /* Borders and Effects */
+    --border: #334155;
+    --glass: rgba(30, 41, 59, 0.7);
+    --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+}

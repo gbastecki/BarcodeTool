@@ -1,0 +1,117 @@
+﻿/* Effects Utilities */
+
+/* Border Utilities */
+.border {
+    border: 1px solid var(--border);
+}
+
+.border-b {
+    border-bottom: 1px solid;
+    border-bottom-color: inherit;
+}
+
+.border-r {
+    border-right: 1px solid;
+    border-right-color: inherit;
+}
+
+.border-border {
+    border-color: var(--border);
+}
+
+.border-transparent {
+    border-color: transparent;
+}
+
+.border-primary {
+    border-color: var(--primary);
+}
+
+/* Border Radius */
+.rounded {
+    border-radius: 0.375rem;
+}
+
+.rounded-lg {
+    border-radius: 0.5rem;
+}
+
+.rounded-xl {
+    border-radius: 0.75rem;
+}
+
+/* Shadows */
+.shadow-lg {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.shadow-xl {
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Background Colors */
+.bg-glass {
+    background-color: var(--glass);
+    backdrop-filter: blur(12px);
+}
+
+.bg-card {
+    background-color: var(--bg-card);
+}
+
+.bg-darker {
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.bg-white {
+    background-color: white;
+}
+
+.bg-primary-low {
+    background-color: rgba(99, 102, 241, 0.15);
+}
+
+.bg-black\/30 {
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.bg-black\/20 {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+/* Transitions */
+.transition-colors {
+    transition-property: color, background-color, border-color;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+}
+
+.transition-all {
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+}
+
+/* Cursor */
+.cursor-pointer {
+    cursor: pointer;
+}
+
+/* Opacity */
+.opacity-50 {
+    opacity: 0.5;
+}
+
+/* Hover States */
+.hover\:bg-glass:hover {
+    background-color: var(--glass);
+}
+
+/* Dividers */
+.divide-y > * + * {
+    border-top: 1px solid var(--border);
+}
+
+.divide-border > * + * {
+    border-color: var(--border);
+}
