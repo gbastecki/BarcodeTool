@@ -4,6 +4,7 @@
 		<TargetFramework>net10.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<PublishTrimmed>false</PublishTrimmed>
+		<WasmBuildNative>true</WasmBuildNative>
 	</PropertyGroup>
 
 	<ItemGroup>
