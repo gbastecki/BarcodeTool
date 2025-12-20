@@ -17,6 +17,9 @@ jobs:
       with:
         dotnet-version: 10.0.x
 
+    - name: Install WASM Tools
+      run: dotnet workload install wasm-tools
+
     - name: Restore dependencies
       working-directory: ./src/BarcodeTool/BarcodeTool/BarcodeTool
       run: dotnet restore BarcodeTool.csproj
