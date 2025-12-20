@@ -1,0 +1,123 @@
+﻿/* Layout Utilities */
+
+/* Height */
+.h-full {
+    height: 100%;
+}
+
+/* Width */
+.w-full {
+    width: 100%;
+}
+
+.w-64 {
+    width: 16rem;
+}
+
+.max-w-4xl {
+    max-width: 56rem;
+}
+
+/* Display */
+.flex {
+    display: flex;
+}
+
+.flex-col {
+    flex-direction: column;
+}
+
+.flex-1 {
+    flex: 1;
+}
+
+.inline-block {
+    display: inline-block;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Flexbox Alignment */
+.items-center {
+    align-items: center;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.justify-between {
+    justify-content: space-between;
+}
+
+.flex-wrap {
+    flex-wrap: wrap;
+}
+
+.shrink-0 {
+    flex-shrink: 0;
+}
+
+.gap-2 {
+    gap: 0.5rem;
+}
+
+/* Positioning */
+.relative {
+    position: relative;
+}
+
+.absolute {
+    position: absolute;
+}
+
+.inset-0 {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.z-10 {
+    z-index: 10;
+}
+
+/* Overflow */
+.overflow-hidden {
+    overflow: hidden;
+}
+
+.overflow-auto {
+    overflow: auto;
+}
+
+.overflow-y-auto {
+    overflow-y: auto;
+}
+
+/* Auto Margins */
+.mx-auto {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Mobile Responsive Styles */
+@media (max-width: 767.98px) {
+
+    .flex-1.flex.overflow-hidden > .w-64 {
+        width: 100%;
+        max-height: 30vh;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .flex-1.flex.overflow-hidden {
+        flex-direction: column;
+    }
+
+        .flex-1.flex.overflow-hidden > .flex-1 {
+            min-height: 0;
+        }
+}

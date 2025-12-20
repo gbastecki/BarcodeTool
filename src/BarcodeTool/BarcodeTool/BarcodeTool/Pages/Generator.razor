@@ -1,0 +1,164 @@
+﻿@page "/generator"
+@inherits BlazorMvvmComponentBase<GeneratorViewModel>
+@implements IAsyncDisposable
+
+<div class="generator-page">
+    <div class="p-4 border-b border-border bg-glass flex justify-between items-center shrink-0">
+        <h1 class="text-xl font-bold m-0" style="margin:0 !important; font-size: 1.5rem;">Barcode Generator</h1>
+    </div>
+
+    <div class="generator-page-content">
+        <div class="generator-controls">
+            <div class="form-group mb-4">
+                <label class="form-label">Content</label>
+                <textarea rows="3" class="form-control" @bind="BaseViewModel.Content" @bind:event="oninput" placeholder="Enter text..."></textarea>
+            </div>
+
+            <div class="form-group mb-4">
+                <label class="form-label">Barcode Format</label>
+                <select class="form-control" @bind="BaseViewModel.Format">
+                    @foreach (var format in BaseViewModel.SupportedFormats)
+                    {
+                        <option value="@format">@format</option>
+                    }
+                </select>
+            </div>
+
+            <div class="section-divider"></div>
+
+            <div class="form-group mb-4">
+                <label class="form-label">Width (px)</label>
+                <input type="number" class="form-control" @bind="BaseViewModel.Width" min="50" max="2000" />
+            </div>
+
+            <div class="form-group mb-4">
+                <label class="form-label">Height (px)</label>
+                <input type="number" class="form-control" @bind="BaseViewModel.Height" min="50" max="2000" />
+            </div>
+
+            <div class="form-group mb-4">
+                <label class="form-label">Margins (px)</label>
+                <div class="margin-grid">
+                    <div class="margin-row">
+                        <input type="number" class="form-control margin-input" @bind="BaseViewModel.MarginTop" min="0" max="100" title="Top" placeholder="Top" />
+                    </div>
+                    <div class="margin-row">
+                        <input type="number" class="form-control margin-input" @bind="BaseViewModel.MarginLeft" min="0" max="100" title="Left" placeholder="Left" />
+                        <div class="margin-preview"></div>
+                        <input type="number" class="form-control margin-input" @bind="BaseViewModel.MarginRight" min="0" max="100" title="Right" placeholder="Right" />
+                    </div>
+                    <div class="margin-row">
+                        <input type="number" class="form-control margin-input" @bind="BaseViewModel.MarginBottom" min="0" max="100" title="Bottom" placeholder="Bottom" />
+                    </div>
+                </div>
+            </div>
+
+            @if (BaseViewModel.Is1DFormat(BaseViewModel.Format))
+            {
+                <div class="format-options">
+                    <h4>1D Barcode Options</h4>
+                    <div class="form-group mb-4">
+                        <label class="form-label checkbox-label">
+                            <input type="checkbox" @bind="BaseViewModel.ShowTextBelow" /> Show text below barcode
+                        </label>
+                    </div>
+                    @if (BaseViewModel.ShowTextBelow)
+                    {
+                        <div class="form-group mb-4">
+                            <label class="form-label">Font Size (px)</label>
+                            <input type="number" class="form-control" @bind="BaseViewModel.FontSize" min="8" max="48" />
+                        </div>
+                    }
+                </div>
+            }
+
+            @if (BaseViewModel.SupportsGS1(BaseViewModel.Format))
+            {
+                <div class="format-options">
+                    <h4>GS1 Options</h4>
+                    <div class="form-group mb-4">
+                        <label class="form-label checkbox-label">
+                            <input type="checkbox" @bind="BaseViewModel.EnableGS1" /> Enable GS1 Mode
+                        </label>
+                        <p class="text-xs text-muted mt-1">GS1 format requires data with Application Identifiers (e.g., 01GTIN14)</p>
+                    </div>
+                </div>
+            }
+
+            @if (BaseViewModel.Format == BarcodeFormat.QR_CODE)
+            {
+                <div class="format-options">
+                    <h4>QR Code Options</h4>
+                    <div class="form-group mb-4">
+                        <label class="form-label">Error Correction Level</label>
+                        <select class="form-control" @bind="BaseViewModel.QrErrorCorrectionLevel">
+                            <option value="L">L (~7% recovery)</option>
+                            <option value="M">M (~15% recovery)</option>
+                            <option value="Q">Q (~25% recovery)</option>
+                            <option value="H">H (~30% recovery)</option>
+                        </select>
+                    </div>
+                </div>
+            }
+
+            @if (BaseViewModel.Format == BarcodeFormat.PDF_417)
+            {
+                <div class="format-options">
+                    <h4>PDF417 Options</h4>
+                    <div class="form-group mb-4">
+                        <label class="form-label">Error Correction Level (0-8)</label>
+                        <input type="number" class="form-control" @bind="BaseViewModel.Pdf417ErrorLevel" min="0" max="8" />
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">
+                            <input type="checkbox" @bind="BaseViewModel.Pdf417Compact" /> Compact Mode
+                        </label>
+                    </div>
+                </div>
+            }
+
+            @if (BaseViewModel.Format == BarcodeFormat.AZTEC)
+            {
+                <div class="format-options">
+                    <h4>Aztec Options</h4>
+                    <div class="form-group mb-4">
+                        <label class="form-label">Error Correction % (0-100)</label>
+                        <input type="number" class="form-control" @bind="BaseViewModel.AztecErrorPercent" min="0" max="100" />
+                    </div>
+                </div>
+            }
+
+            @if (!string.IsNullOrEmpty(BaseViewModel.ErrorMessage))
+            {
+                <div class="alert-error">
+                    @BaseViewModel.ErrorMessage
+                </div>
+            }
+
+            <button @onclick="BaseViewModel.GenerateBarcodeAsyncCommand.Execute" class="btn-generate">Generate</button>
+
+            @if (BaseViewModel.HasGeneratedImage)
+            {
+                <button @onclick="BaseViewModel.DownloadImageAsyncCommand.Execute" class="btn-download mt-4 w-full">Download PNG</button>
+                <button @onclick="BaseViewModel.DownloadSvgAsyncCommand.Execute" class="btn-download mt-4 w-full">Download SVG</button>
+            }
+        </div>
+
+        <div class="generator-preview">
+            @if (BaseViewModel.HasGeneratedImage)
+            {
+                <div class="generator-preview-card">
+                    <div class="barcode-viewbox">
+                        <img id="barcode-preview-img" alt="Generated Barcode" />
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="flex flex-col items-center justify-center text-muted opacity-50 select-none">
+                    <p class="text-lg font-medium">Enter content and click Generate</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>

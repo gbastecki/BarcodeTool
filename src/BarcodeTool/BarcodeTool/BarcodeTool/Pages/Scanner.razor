@@ -1,0 +1,191 @@
+﻿@page "/scanner"
+@inherits BlazorMvvmComponentBase<ScannerViewModel>
+@implements IAsyncDisposable
+
+<div class="h-full flex flex-col overflow-hidden">
+    <div class="p-4 border-b border-border bg-glass shrink-0">
+        <h1 class="text-xl font-bold m-0" style="margin:0 !important; font-size: 1.5rem;">Barcode Scanner</h1>
+    </div>
+
+    <div class="flex-1 flex overflow-hidden">
+        <div class="w-64 bg-card border-r border-border flex flex-col overflow-hidden shrink-0">
+            <div class="p-3 border-b border-border bg-glass flex items-center justify-between gap-2">
+                <h3 class="text-sm font-semibold text-muted uppercase tracking-wider m-0">Scanned Files</h3>
+                <label for="file-upload" class="btn-add-files @(BaseViewModel.IsLoading ? "opacity-50 pointer-events-none" : "")" title="Add images">
+                    +
+                </label>
+                <InputFile OnChange="@BaseViewModel.LoadFilesAsyncCommand.Execute" multiple id="file-upload" class="hidden" style="display:none" accept="image/*,.svg" disabled="@BaseViewModel.IsLoading" />
+            </div>
+
+            <div class="overflow-y-auto flex-1 p-2 relative">
+                @if (BaseViewModel.IsLoading)
+                {
+                    <div class="loading-bar-container">
+                        <div class="loading-bar-content">
+                            <div class="scanner-loader-mini">
+                                <div class="scanner-loader-bar"></div>
+                                <div class="scanner-loader-bar"></div>
+                                <div class="scanner-loader-bar"></div>
+                            </div>
+                            <div class="loading-bar-text">
+                                @BaseViewModel.LoadingStatus
+                            </div>
+                            <button class="btn-cancel-mini" @onclick="BaseViewModel.CancelLoadingCommand.Execute">
+                                ✕
+                            </button>
+                        </div>
+                    </div>
+                }
+
+                @if (BaseViewModel.ScannedFiles.Any())
+                {
+                    @foreach (var file in BaseViewModel.ScannedFiles)
+                    {
+                        <div class="mb-4">
+                            <div class="flex items-center justify-between mb-2 px-2">
+                                <div class="text-xs text-muted truncate flex-1" title="@file.Name">@file.Name</div>
+                                <button class="btn-remove-file" @onclick="() => BaseViewModel.RemoveFileAsyncCommand.Execute(file)" title="Remove file">×</button>
+                            </div>
+                            @if (file.Barcodes.Any())
+                            {
+                                @foreach (var barcode in file.Barcodes)
+                                {
+                                    <div class="p-3 mb-2 rounded cursor-pointer transition-colors border border-transparent
+                                                                @(BaseViewModel.SelectedBarcode == barcode ? "bg-primary-low border-primary" : "bg-darker hover:bg-glass")"
+                                         @onclick="() => BaseViewModel.SelectBarcodeAsyncCommand.Execute((barcode, file))">
+                                        <div class="flex items-center gap-2 mb-1">
+                                            <span class="badge text-xs">@barcode.Result.BarcodeFormat</span>
+                                        </div>
+                                        <div class="text-sm truncate font-mono text-muted">
+                                            @barcode.Result.Text
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="px-2 text-sm text-muted italic">No barcodes found</div>
+                            }
+                        </div>
+                    }
+                }
+                else if (!BaseViewModel.IsLoading)
+                {
+                    <div class="p-4 text-center text-muted text-sm">
+                        Upload images to detect barcodes
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="flex-1 bg-darker overflow-hidden flex flex-col relative">
+            @if (BaseViewModel.SelectedBarcode != null)
+            {
+                <div class="absolute inset-0 overflow-y-auto p-6">
+                    <div class="scanner-details-container">
+                        @if (BaseViewModel.SelectedFile?.ImageBytes != null)
+                        {
+                            <div class="bg-glass border border-border rounded-xl p-4 shadow-xl mb-6">
+                                <h2 class="text-lg font-semibold mb-4 text-accent">Source Image</h2>
+                                <img id="@BaseViewModel.SelectedFile.PreviewElementId" alt="@BaseViewModel.SelectedFile.Name" class="file-preview-image" />
+                                <div class="text-sm text-muted mt-2">@BaseViewModel.SelectedFile.Name</div>
+                            </div>
+                        }
+                        <div class="bg-glass border border-border rounded-xl p-6 shadow-xl mb-6">
+                            <div class="flex flex-col md:flex-row gap-8">
+                                <div class="flex-1">
+                                    <h2 class="text-lg font-semibold mb-4 text-primary">Decoded Content</h2>
+                                    <div class="bg-black/30 p-4 rounded-lg font-mono text-sm break-all border border-border select-all">
+                                        @BaseViewModel.SelectedBarcode.Result.Text
+                                    </div>
+                                </div>
+
+                                <div class="w-full md:w-72 shrink-0">
+                                    <h2 class="text-lg font-semibold mb-4 text-accent">Properties</h2>
+                                    <div class="space-y-3 text-sm">
+                                        <div class="flex justify-between border-b border-border pb-2">
+                                            <span class="text-muted">Type</span>
+                                            <span class="font-mono">@BaseViewModel.SelectedBarcode.Result.BarcodeFormat</span>
+                                        </div>
+                                        <div class="flex justify-between border-b border-border pb-2">
+                                            <span class="text-muted">Length</span>
+                                            <span class="font-mono">@BaseViewModel.SelectedBarcode.Result.Text.Length chars</span>
+                                        </div>
+                                        <div class="flex justify-between border-b border-border pb-2">
+                                            <span class="text-muted">Dimension</span>
+                                            <span class="font-mono">@BaseViewModel.GetDimension(BaseViewModel.SelectedBarcode.Result.BarcodeFormat)</span>
+                                        </div>
+                                        <div class="flex justify-between border-b border-border pb-2">
+                                            <span class="text-muted">GS1</span>
+                                            <span class="font-mono">@(BaseViewModel.IsGS1(BaseViewModel.SelectedBarcode.Result) ? "Yes" : "No")</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        @if (BaseViewModel.SelectedBarcode.Result.ResultMetadata != null && BaseViewModel.SelectedBarcode.Result.ResultMetadata.Count > 0)
+                        {
+                            <div class="bg-card border border-border rounded-xl overflow-hidden shadow-lg mb-6">
+                                <div class="bg-glass px-6 py-4 border-b border-border">
+                                    <h3 class="font-semibold m-0">Metadata</h3>
+                                </div>
+                                <table class="w-full text-sm text-left">
+                                    <thead class="bg-black/20 text-muted uppercase text-xs">
+                                        <tr>
+                                            <th class="px-6 py-3">Key</th>
+                                            <th class="px-6 py-3">Value</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-border">
+                                        @foreach (var meta in BaseViewModel.SelectedBarcode.Result.ResultMetadata)
+                                        {
+                                            <tr class="hover:bg-glass transition-colors">
+                                                <td class="px-6 py-4 font-mono text-primary">@meta.Key</td>
+                                                <td class="px-6 py-4 text-muted break-all font-mono text-xs">@ScannerViewModel.FormatMetadataValue(meta.Value)</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+
+                        @if (BaseViewModel.SelectedBarcode.Result.RawBytes != null)
+                        {
+                            <div class="bg-card border border-border rounded-xl p-6 mb-6">
+                                <h3 class="font-semibold mb-4">Raw Bytes (Hex)</h3>
+                                <div class="font-mono text-xs text-muted break-all leading-relaxed bg-black/20 p-4 rounded-lg">
+                                    @BitConverter.ToString(BaseViewModel.SelectedBarcode.Result.RawBytes).Replace("-", " ")
+                                </div>
+                            </div>
+
+                            <div class="bg-card border border-border rounded-xl p-6">
+                                <h3 class="font-semibold mb-4">Raw Bytes (Binary)</h3>
+                                <div class="font-mono text-xs text-muted break-all leading-relaxed bg-black/20 p-4 rounded-lg">
+                                    @ScannerViewModel.FormatBinaryBytes(BaseViewModel.SelectedBarcode.Result.RawBytes)
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="flex-1 flex flex-col items-center justify-center p-8">
+                    @if (!BaseViewModel.ScannedFiles.Any() && !BaseViewModel.IsLoading)
+                    {
+                        <label id="scanner-dropzone" for="file-upload" class="upload-dropzone">
+                            <div class="upload-dropzone-icon">📁</div>
+                            <div class="upload-dropzone-title">Drop images here or click to upload</div>
+                            <div class="upload-dropzone-hint">Supports PNG, JPG, SVG and more</div>
+                        </label>
+                    }
+                    else
+                    {
+                        <p class="text-muted">Select a barcode from the list to view details</p>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</div>

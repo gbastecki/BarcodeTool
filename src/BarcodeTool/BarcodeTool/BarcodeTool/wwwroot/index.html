@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>BarcodeTool - Free Online Barcode Scanner & Generator</title>
+    <meta name="title" content="BarcodeTool - Free Online Barcode Scanner & Generator" />
+    <meta name="description" content="A modern, client-side barcode scanner and generator built with Blazor WebAssembly. Scan and generate QR codes, EAN-13, Code 128, DataMatrix, and 20+ barcode formats. 100% private - all processing happens in your browser." />
+    <meta name="keywords" content="barcode scanner, barcode generator, QR code, EAN-13, Code 128, DataMatrix, online barcode tool, free barcode maker, Blazor WebAssembly, privacy-first" />
+    <meta name="author" content="Grzegorz Bastecki" />
+    <meta name="robots" content="index, follow" />
+    <meta name="language" content="English" />
+
+    <meta name="theme-color" content="#03173d" />
+    <meta name="msapplication-TileColor" content="#03173d" />
+
+    <base href="/" />
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link href="BarcodeTool.styles.css" rel="stylesheet" />
+    <link href="manifest.json" rel="manifest" />
+    <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png" />
+    <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png" />
+</head>
+
+<body>
+    <div id="app">
+        <div class="barcode-loader">
+            <div class="barcode-bars">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
+            <div class="barcode-text">1234567890</div>
+            <div class="loading-label">Loading...</div>
+        </div>
+    </div>
+
+    <div id="blazor-error-ui">
+        An unhandled error has occurred.
+        <a href="" class="reload">Reload</a>
+        <a class="dismiss">🗙</a>
+    </div>
+    <script src="_framework/blazor.webassembly.js"></script>
+    <script>navigator.serviceWorker.register('service-worker.js');</script>
+</body>
+
+</html>

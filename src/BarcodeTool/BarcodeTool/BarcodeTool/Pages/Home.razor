@@ -1,0 +1,22 @@
+﻿@page "/"
+@inherits BlazorMvvmComponentBase<HomeViewModel>
+
+<PageTitle>Barcode Tool</PageTitle>
+
+<div class="home-container">
+    <h1>Welcome to Barcode Tool</h1>
+    <p>A simple, secure, and fast client-side barcode scanner and generator.</p>
+
+    <div class="features">
+        <div class="feature-card">
+            <h2>Scan</h2>
+            <p>Upload images to scan for barcodes. View detailed metadata including content, type, dimension, and raw bytes.</p>
+            <a href="scanner" class="btn-link">Go to Scanner</a>
+        </div>
+        <div class="feature-card">
+            <h2>Generate</h2>
+            <p>Create various types of barcodes (QR, EAN, UPC, etc.) and download them as images.</p>
+            <a href="generator" class="btn-link">Go to Generator</a>
+        </div>
+    </div>
+</div>

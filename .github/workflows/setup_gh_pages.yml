@@ -1,0 +1,42 @@
+name: SetupGithubPages
+env:
+  PUBLISH_DIR: /home/runner/work/BarcodeTool/BarcodeTool/src/BarcodeTool/BarcodeTool/BarcodeTool/release/wwwroot
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    permissions:
+        contents: write
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 10.0.x
+
+    - name: Restore dependencies
+      working-directory: ./src/BarcodeTool/BarcodeTool/BarcodeTool
+      run: dotnet restore BarcodeTool.csproj
+
+    - name: BuildWasmApp
+      working-directory: ./src/BarcodeTool/BarcodeTool/BarcodeTool
+      run: dotnet publish BarcodeTool.csproj -c Release -o release
+      
+    - name: Change base-tag in index.html from / to BarcodeTool
+      run: sed -i 's/<base href="\/" \/>/<base href="\/BarcodeTool\/" \/>/g' ${{ env.PUBLISH_DIR }}/index.html
+  
+    - name: copy index.html to 404.html
+      run: cp ${{ env.PUBLISH_DIR }}/index.html ${{ env.PUBLISH_DIR }}/404.html
+      
+    - name: Add .nojekyll file
+      run: touch ${{ env.PUBLISH_DIR }}/.nojekyll
+      
+    - name: Commit wwwroot to GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        BRANCH: gh_pages
+        FOLDER: ${{ env.PUBLISH_DIR }}

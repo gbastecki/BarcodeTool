@@ -1,0 +1,30 @@
+﻿@page "/libraries"
+@inherits BlazorMvvmComponentBase<LibrariesViewModel>
+
+<div class="h-full flex flex-col overflow-hidden">
+    <div class="p-4 border-b border-border bg-glass shrink-0">
+        <h1 class="text-xl font-bold m-0" style="margin:0 !important; font-size: 1.5rem;">Libraries & Licenses</h1>
+        <p class="text-muted text-sm mt-2 mb-0">This application uses the following open-source libraries.</p>
+    </div>
+
+    <div class="flex-1 overflow-y-auto p-6">
+        <div class="library-grid">
+            @foreach (var lib in BaseViewModel.LibraryList)
+            {
+                <div class="library-card">
+                    <div class="library-header">
+                        <h3 class="library-name">@lib.Name</h3>
+                        <span class="library-version">@lib.Version</span>
+                    </div>
+                    <p class="library-description">@lib.Description</p>
+                    <div class="library-footer">
+                        <span class="library-license">@lib.License</span>
+                        <a href="@lib.NuGetUrl" target="_blank" rel="noopener noreferrer" class="library-link">
+                            NuGet →
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

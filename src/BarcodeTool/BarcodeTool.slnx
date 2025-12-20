@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/workflows/">
+    <File Path="../../.github/workflows/build.yml" />
+    <File Path="../../.github/workflows/setup_gh_pages.yml" />
+  </Folder>
+  <Folder Name="/repo/">
+    <File Path="../../LICENSE" />
+    <File Path="../../NOTICE" />
+    <File Path="../../README.md" />
+  </Folder>
+  <Project Path="BarcodeTool.UnitTests/BarcodeTool.UnitTests.csproj" />
+  <Project Path="BarcodeTool/BarcodeTool/BarcodeTool.csproj" />
+</Solution>
