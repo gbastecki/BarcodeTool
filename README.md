@@ -3,11 +3,13 @@
 ![https://github.com/github/docs/actions/workflows/main.yml](https://github.com/gbastecki/BarcodeTool/actions/workflows/build.yml/badge.svg)
 ![.NET 10](https://img.shields.io/badge/.NET-10.0-512BD4?logo=dotnet)
 ![Blazor WebAssembly](https://img.shields.io/badge/Blazor-WebAssembly-512BD4?logo=blazor)
-[![GitHub](https://img.shields.io/github/license/gbastecki/BarcodeTool?color=0000a4&style=plastic)](https://github.com/gbastecki/BarcodeTool/blob/main/LICENSE)
+[![GitHub](https://img.shields.io/github/license/gbastecki/BarcodeTool?style=plastic&color=0000a4)](https://github.com/gbastecki/BarcodeTool/blob/main/LICENSE)
 
 A modern, client-side barcode scanner and generator built with Blazor WebAssembly. 
 
 All processing happens locally in your browser - no data is ever sent to a server.
+
+Application is available via [GithubPages](https://gbastecki.github.io/BarcodeTool).
 
 ## Features
 
