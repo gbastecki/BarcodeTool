@@ -75,6 +75,88 @@ public class BarcodeGeneratorService : IBarcodeGeneratorService
         };
     }
 
+    /// <summary>
+    /// Gets the display text for a barcode, including auto-calculated check digits for EAN/UPC formats.
+    /// </summary>
+    private static string GetDisplayText(string content, BarcodeFormat format)
+    {
+        return format switch
+        {
+            BarcodeFormat.EAN_8 when content.Length == 7 => content + CalculateEanCheckDigit(content),
+            BarcodeFormat.EAN_13 when content.Length == 12 => content + CalculateEanCheckDigit(content),
+            BarcodeFormat.UPC_A when content.Length == 11 => content + CalculateEanCheckDigit(content),
+            BarcodeFormat.UPC_E when content.Length == 7 => content + CalculateUpcECheckDigit(content),
+            _ => content
+        };
+    }
+
+    /// <summary>
+    /// Calculates the check digit for EAN-8, EAN-13, and UPC-A barcodes.
+    /// </summary>
+    private static char CalculateEanCheckDigit(string digits)
+    {
+        int sum = 0;
+        bool isOdd = true;
+
+        for (int i = digits.Length - 1; i >= 0; i--)
+        {
+            int digit = digits[i] - '0';
+            sum += isOdd ? digit * 3 : digit;
+            isOdd = !isOdd;
+        }
+
+        int checkDigit = (10 - (sum % 10)) % 10;
+        return (char)('0' + checkDigit);
+    }
+
+    /// <summary>
+    /// Calculates the check digit for UPC-E barcodes.
+    /// </summary>
+    private static char CalculateUpcECheckDigit(string digits)
+    {
+        string expanded = ExpandUpcE(digits);
+        return CalculateEanCheckDigit(expanded);
+    }
+
+    /// <summary>
+    /// Expands a 7-digit UPC-E code to its 11-digit UPC-A equivalent (without check digit).
+    /// </summary>
+    private static string ExpandUpcE(string upcE)
+    {
+        if (upcE.Length != 7)
+        {
+            return upcE;
+        }
+
+        char lastDigit = upcE[6];
+        string manufacturer;
+        string product;
+
+        switch (lastDigit)
+        {
+            case '0':
+            case '1':
+            case '2':
+                manufacturer = upcE.Substring(1, 2) + lastDigit + "00";
+                product = string.Concat("00", upcE.AsSpan(3, 3));
+                break;
+            case '3':
+                manufacturer = upcE.Substring(1, 3) + "00";
+                product = string.Concat("000", upcE.AsSpan(4, 2));
+                break;
+            case '4':
+                manufacturer = upcE.Substring(1, 4) + "0";
+                product = "0000" + upcE[5];
+                break;
+            default: // 5-9
+                manufacturer = upcE.Substring(1, 5);
+                product = "0000" + lastDigit;
+                break;
+        }
+
+        return upcE[0] + manufacturer + product;
+    }
+
     public Task<BarcodeGenerationResult> GenerateAsync(BarcodeGenerationOptions options)
     {
         return Task.Run(() => GenerateInternal(options));
@@ -126,7 +208,8 @@ public class BarcodeGeneratorService : IBarcodeGeneratorService
 
                     float textX = options.MarginLeft + barcodeBitmap.Width / 2f;
                     float textY = options.MarginTop + barcodeBitmap.Height + options.FontSize;
-                    canvas.DrawText(options.Content, textX, textY, SKTextAlign.Center, font, paint);
+                    string displayText = GetDisplayText(options.Content, options.Format);
+                    canvas.DrawText(displayText, textX, textY, SKTextAlign.Center, font, paint);
                 }
 
                 using SKImage image = SKImage.FromBitmap(finalBitmap);
@@ -236,7 +319,8 @@ public class BarcodeGeneratorService : IBarcodeGeneratorService
         {
             int textX = options.MarginLeft + matrixWidth / 2;
             int textY = options.MarginTop + matrixHeight + options.FontSize;
-            sb.AppendLine($"<text x=\"{textX}\" y=\"{textY}\" text-anchor=\"middle\" font-family=\"Consolas, monospace\" font-size=\"{options.FontSize}\" fill=\"black\">{System.Security.SecurityElement.Escape(options.Content)}</text>");
+            string displayText = GetDisplayText(options.Content, options.Format);
+            sb.AppendLine($"<text x=\"{textX}\" y=\"{textY}\" text-anchor=\"middle\" font-family=\"Consolas, monospace\" font-size=\"{options.FontSize}\" fill=\"black\">{System.Security.SecurityElement.Escape(displayText)}</text>");
         }
 
         sb.AppendLine("</svg>");
