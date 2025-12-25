@@ -9,10 +9,10 @@ public partial class LibrariesViewModel : BlazorViewModel
 
     internal readonly LibraryInfo[] LibraryList =
     [
-        new("BlazorMvvm", "1.1.2",
-            "MVVM framework for Blazor with source generators for automatic property change notification and ViewModel lifecycle management.",
+        new("BlazorMvvm", "1.2.0",
+            "MVVM toolkit for Blazor with source generators for automatic property change notification and ViewModel lifecycle management.",
             "MIT License",
-            "https://www.nuget.org/packages/gbastecki.BlazorMvvm/1.1.2"),
+            "https://www.nuget.org/packages/gbastecki.BlazorMvvm/1.2.0"),
 
         new("Microsoft.AspNetCore.Components.WebAssembly", "10.0.1",
             "Core framework for building Blazor WebAssembly applications, providing client-side hosting and component rendering.",
