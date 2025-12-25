@@ -162,6 +162,16 @@
     animation: pulse 1.5s ease-in-out infinite;
 }
 
+.loading-progress-text {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    font-weight: bold;
+}
+
+    .loading-progress-text:after {
+        content: var(--blazor-load-percentage-text, "0%");
+    }
+
 @keyframes pulse {
 
     0%, 100% {
